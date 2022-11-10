@@ -1,13 +1,12 @@
+import { Article } from './article.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from './baseEntity';
 
 @Entity()
 @ObjectType()
-export class User {
-  @PrimaryGeneratedColumn()
-  public id: number;
-
-  @Field((type) => String)
+export class User extends BaseEntity {
+  @Field()
   @Column()
   name: string;
 
@@ -18,4 +17,7 @@ export class User {
   @Field({ nullable: true })
   @Column({ nullable: true })
   age?: number;
+
+  @Field((type) => [Article])
+  article: Article[];
 }

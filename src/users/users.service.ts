@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { User } from 'src/database/entities';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -12,27 +17,32 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+  async create(createUserInput: CreateUserInput) {
+    const user = this.userRepository.create(createUserInput);
+    return this.userRepository.save(user);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    const user = new User();
-    user.name = 'yushaku';
-    user.email = 'yushaku@gmail.com';
+  async findOne(id: string) {
+    return this.userRepository.findOne({ where: { id } });
+  }
+
+  async update(id: string, updateUserInput: UpdateUserInput) {
+    console.table(updateUserInput);
+    const user = await this.userRepository.update(id, updateUserInput);
+    if (!user) throw new NotFoundException('not found user');
 
     return user;
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const deleteResponse = await this.userRepository.delete(id);
+    if (!deleteResponse.affected) {
+      throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
+    }
+    return deleteResponse;
   }
 }
