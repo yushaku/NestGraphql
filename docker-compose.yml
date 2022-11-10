@@ -1,0 +1,37 @@
+version: '3.5'
+
+services:
+  app:
+    container_name: chat-app
+    image: chat-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - ${APP_PORT:}:${APP_PORT}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - lumyri-network
+
+  postgres:
+    container_name: chat-db
+    image: postgres:14.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB_MAIN: ${POSTGRES_DB}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./.docker/postgres/data:/var/lib/postgresql/data
+      - ./.docker/postgres/entrypoint:/docker-entrypoint-initdb.d
+    networks:
+      - lumyri-network
+
+networks:
+  lumyri-network:
+    external: true
