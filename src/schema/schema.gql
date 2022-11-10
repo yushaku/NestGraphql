@@ -2,12 +2,66 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Article {
+  content: String!
+  created_at: DateTime!
+  description: String!
+  id: String!
+  owner: User!
+  title: String!
+  updated_at: DateTime!
+  userId: String!
+}
+
+input CreateArticleInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateUserInput {
+  age: Float
+  email: String!
+  name: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  create(createUserInput: CreateUserInput!): User!
+  createArticle(createArticleInput: CreateArticleInput!): Article!
+  removeArticle(id: Int!): Article!
+  update(updateUserInput: UpdateUserInput!): User!
+  updateArticle(updateArticleInput: UpdateArticleInput!): Article!
+}
+
 type Query {
-  findOne(id: Float!): [User!]!
+  article(id: Int!): Article!
+  articles: [Article!]!
+  findAll: [User!]!
+  findOne(id: String!): User!
+}
+
+input UpdateArticleInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateUserInput {
+  age: Float
+  email: String!
+  name: String!
 }
 
 type User {
   age: Float
+  article: [Article!]!
+  created_at: DateTime!
   email: String!
+  id: String!
   name: String!
+  updated_at: DateTime!
 }
