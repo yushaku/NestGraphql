@@ -1,3 +1,4 @@
+import { User } from './entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -13,7 +14,11 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    const user = new User();
+    user.name = 'yushaku';
+    user.email = 'yushaku@gmail.com';
+
+    return user;
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {

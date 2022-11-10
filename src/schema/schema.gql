@@ -1,0 +1,13 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  findOne(id: Float!): [User!]!
+}
+
+type User {
+  age: Float
+  email: String!
+  name: String!
+}
